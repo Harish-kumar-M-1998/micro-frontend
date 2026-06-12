@@ -1,5 +1,6 @@
 import { apiClient } from '../api/client';
 import { tokenStorage } from '../utils/tokenStorage';
+import { isDemoMode } from '../utils/env';
 import type { AuthTokens, AuthUser, LoginCredentials } from '../types';
 
 /** Mock demo credentials for local development */
@@ -17,7 +18,7 @@ const DEMO_USER: AuthUser = {
 export const authService = {
   async login(credentials: LoginCredentials): Promise<{ user: AuthUser; tokens: AuthTokens }> {
     // Demo mode: accept any credentials with valid email format
-    if (import.meta.env.DEV) {
+    if (isDemoMode()) {
       await simulateDelay(500);
       if (!credentials.email.includes('@')) {
         throw { message: 'Invalid email format', code: 'VALIDATION_ERROR', status: 400 };
@@ -45,7 +46,7 @@ export const authService = {
 
   async logout(): Promise<void> {
     try {
-      if (!import.meta.env.DEV) {
+      if (!isDemoMode()) {
         await apiClient.post('/auth/logout');
       }
     } finally {

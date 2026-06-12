@@ -128,7 +128,8 @@ Services: host (:5000), dashboard (:5001), user (:5002), reports (:5003)
 
 - [Architecture Guide](docs/ARCHITECTURE.md) — System design, diagrams, patterns
 - [Deployment Guide](docs/DEPLOYMENT.md) — Production deployment flow
-- [GitHub + CI/CD + Netlify/Render Guide](docs/GITHUB_DEPLOYMENT.md) — **Push to GitHub & auto-deploy**
+- [Netlify Setup (step-by-step)](docs/NETLIFY_SETUP.md) — **Fix login & host integration**
+- [GitHub + CI/CD + Netlify/Render Guide](docs/GITHUB_DEPLOYMENT.md) — Push to GitHub & auto-deploy
 - [Development Guide](docs/DEVELOPMENT.md) — Team workflow & best practices
 
 ## License

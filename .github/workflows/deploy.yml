@@ -48,6 +48,7 @@ jobs:
           VITE_DASHBOARD_REMOTE: ${{ secrets.VITE_DASHBOARD_REMOTE }}
           VITE_USER_REMOTE: ${{ secrets.VITE_USER_REMOTE }}
           VITE_REPORTS_REMOTE: ${{ secrets.VITE_REPORTS_REMOTE }}
+          VITE_DEMO_MODE: 'true'
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
         run: npm run build -w host-app
       - uses: actions/upload-artifact@v4

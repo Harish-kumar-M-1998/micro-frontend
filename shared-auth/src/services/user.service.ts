@@ -1,4 +1,5 @@
 import { apiClient } from '../api/client';
+import { isDemoMode } from '../utils/env';
 import type { UserProfile } from '../types';
 
 /** Mock users for development/demo */
@@ -41,7 +42,7 @@ export interface UserListParams {
 
 export const userService = {
   async getUsers(params: UserListParams = {}): Promise<{ users: UserProfile[]; total: number }> {
-    if (import.meta.env.DEV) {
+    if (isDemoMode()) {
       await new Promise((r) => setTimeout(r, 300));
       let filtered = [...MOCK_USERS];
       if (params.search) {
@@ -61,7 +62,7 @@ export const userService = {
   },
 
   async getUserById(id: string): Promise<UserProfile> {
-    if (import.meta.env.DEV) {
+    if (isDemoMode()) {
       const user = MOCK_USERS.find((u) => u.id === id);
       if (!user) throw { message: 'User not found', code: 'NOT_FOUND', status: 404 };
       return user;

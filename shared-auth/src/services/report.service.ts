@@ -1,4 +1,5 @@
 import { apiClient } from '../api/client';
+import { isDemoMode } from '../utils/env';
 import type { ReportSummary } from '../types';
 
 const MOCK_REPORTS: ReportSummary[] = [
@@ -41,7 +42,7 @@ export interface ReportListParams {
 
 export const reportService = {
   async getReports(params: ReportListParams = {}): Promise<{ reports: ReportSummary[]; total: number }> {
-    if (import.meta.env.DEV) {
+    if (isDemoMode()) {
       await new Promise((r) => setTimeout(r, 400));
       let filtered = [...MOCK_REPORTS];
       if (params.type) filtered = filtered.filter((r) => r.type === params.type);
