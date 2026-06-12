@@ -12,7 +12,7 @@ interface StatCard {
 const MOCK_STATS: StatCard[] = [
   { label: 'Total Users', value: '12,847', change: '+12.5%', trend: 'up' },
   { label: 'Active Sessions', value: '3,421', change: '+8.2%', trend: 'up' },
-  { label: 'Reports Generated', value: '892', change: '-2.1%', trend: 'down' },
+  { label: 'Reports Generatedddddddd', value: '892', change: '-2.1%', trend: 'down' },
   { label: 'Revenue', value: '$284K', change: '+18.7%', trend: 'up' },
 ];
 
