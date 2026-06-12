@@ -24,20 +24,20 @@ export default function ReportsPage() {
   const [filter, setFilter] = useState<string>('all');
 
   useEffect(() => {
+    const loadReports = async () => {
+      setIsLoading(true);
+      try {
+        const params = filter !== 'all' ? { type: filter } : {};
+        const { reports: data } = await reportService.getReports(params);
+        setReports(data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     loadReports();
     monitoring.track({ name: 'page_view', properties: { page: 'reports' } });
   }, [filter]);
-
-  const loadReports = async () => {
-    setIsLoading(true);
-    try {
-      const params = filter !== 'all' ? { type: filter } : {};
-      const { reports: data } = await reportService.getReports(params);
-      setReports(data);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleGenerate = async () => {
     const report = await reportService.generateReport('analytics');
