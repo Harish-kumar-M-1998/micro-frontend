@@ -1,0 +1,6 @@
+[build]
+  command = "npm ci && npm run build -w user-app"
+  publish = "user-app/dist"
+
+[build.environment]
+  NODE_VERSION = "20"

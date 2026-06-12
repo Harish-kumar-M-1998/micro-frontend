@@ -1,0 +1,44 @@
+{
+  "name": "microfrontend-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready Microfrontend Architecture with Module Federation",
+  "workspaces": [
+    "host-app",
+    "user-app",
+    "dashboard-app",
+    "reports-app",
+    "shared-ui",
+    "shared-auth"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present & npm run dev:host",
+    "dev:host": "npm run dev -w host-app",
+    "dev:stop": "for port in 5000 5001 5002 5003; do lsof -ti :$port | xargs -r kill -9 2>/dev/null || true; done",
+    "dev:all": "npm run dev:stop && concurrently -n host,dashboard,user,reports -c blue,green,yellow,magenta \"npm run dev -w host-app\" \"npm run dev -w dashboard-app\" \"npm run dev -w user-app\" \"npm run dev -w reports-app\"",
+    "dev:remotes": "concurrently -n dashboard,user,reports -c green,yellow,magenta \"npm run dev -w dashboard-app\" \"npm run dev -w user-app\" \"npm run dev -w reports-app\"",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "analyze": "npm run analyze -w host-app",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

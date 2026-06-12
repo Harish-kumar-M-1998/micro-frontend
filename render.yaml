@@ -1,0 +1,68 @@
+# Render Blueprint — deploy 4 static sites from this monorepo
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Usage: Render Dashboard → New → Blueprint → connect GitHub repo
+
+services:
+  # Deploy remotes FIRST, then update host env vars with their URLs
+
+  - type: web
+    name: mfe-dashboard
+    runtime: static
+    buildCommand: npm ci && npm run build -w dashboard-app
+    staticPublishPath: dashboard-app/dist
+    headers:
+      - path: /assets/*
+        name: Access-Control-Allow-Origin
+        value: '*'
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: mfe-user
+    runtime: static
+    buildCommand: npm ci && npm run build -w user-app
+    staticPublishPath: user-app/dist
+    headers:
+      - path: /assets/*
+        name: Access-Control-Allow-Origin
+        value: '*'
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: mfe-reports
+    runtime: static
+    buildCommand: npm ci && npm run build -w reports-app
+    staticPublishPath: reports-app/dist
+    headers:
+      - path: /assets/*
+        name: Access-Control-Allow-Origin
+        value: '*'
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: web
+    name: mfe-host
+    runtime: static
+    buildCommand: npm ci && npm run build -w dashboard-app && npm run build -w user-app && npm run build -w reports-app && npm run build -w host-app
+    staticPublishPath: host-app/dist
+    envVars:
+      - key: VITE_DASHBOARD_REMOTE
+        sync: false
+      - key: VITE_USER_REMOTE
+        sync: false
+      - key: VITE_REPORTS_REMOTE
+        sync: false
+      - key: VITE_API_BASE_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

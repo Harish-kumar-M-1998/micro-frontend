@@ -1,0 +1,32 @@
+# Remote MFE Dockerfile template
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+ARG APP_NAME
+ARG APP_PORT
+
+COPY package.json package-lock.json* ./
+COPY ${APP_NAME}/package.json ./${APP_NAME}/
+COPY shared-ui/package.json ./shared-ui/
+COPY shared-auth/package.json ./shared-auth/
+
+RUN npm ci --workspace=${APP_NAME} --include-workspace-root
+
+COPY tsconfig.base.json ./
+COPY ${APP_NAME}/ ./${APP_NAME}/
+COPY shared-ui/ ./shared-ui/
+COPY shared-auth/ ./shared-auth/
+
+RUN npm run build -w ${APP_NAME}
+
+FROM nginx:1.27-alpine AS production
+ARG APP_PORT
+
+COPY docker/nginx-remote.conf /etc/nginx/nginx.conf
+COPY docker/security-headers.conf /etc/nginx/conf.d/security-headers.conf
+
+ARG APP_NAME
+COPY --from=builder /app/${APP_NAME}/dist /usr/share/nginx/html
+
+EXPOSE ${APP_PORT}
+CMD ["nginx", "-g", "daemon off;"]

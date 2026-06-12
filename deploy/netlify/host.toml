@@ -1,0 +1,15 @@
+# Copy this content into Netlify UI → Site settings → Build & deploy
+# Or rename to netlify.toml at repo root when deploying host-only site.
+
+[build]
+  command = "npm ci && npm run build -w dashboard-app && npm run build -w user-app && npm run build -w reports-app && npm run build -w host-app"
+  publish = "host-app/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
