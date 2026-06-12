@@ -8,6 +8,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
 concurrency:
   group: deploy-production
   cancel-in-progress: true

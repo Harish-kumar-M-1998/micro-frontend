@@ -48,7 +48,13 @@ jobs:
       - run: npm run build -w dashboard-app
       - run: npm run build -w user-app
       - run: npm run build -w reports-app
-      - run: npm run build -w host-app
+      - name: Build host app
+        env:
+          VITE_DEMO_MODE: 'true'
+          VITE_DASHBOARD_REMOTE: ${{ secrets.VITE_DASHBOARD_REMOTE }}
+          VITE_USER_REMOTE: ${{ secrets.VITE_USER_REMOTE }}
+          VITE_REPORTS_REMOTE: ${{ secrets.VITE_REPORTS_REMOTE }}
+        run: npm run build -w host-app
       - uses: actions/upload-artifact@v4
         with:
           name: dist
